@@ -3,15 +3,18 @@
  * and open the template in the editor.
  */
 
+import br.copa.controller.EstadioController;
 import br.copa.dao.EstadioDAO;
 import br.copa.model.Estadio;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.catalina.util.Base64;
 
@@ -73,45 +76,52 @@ public class principal extends HttpServlet {
             throws ServletException, IOException {
        // processRequest(request, response);
         
+        JSONObject jsonObj = new JSONObject();
+        JSONArray arrayEstadio = new JSONArray();
+        Estadio estadio = new Estadio();
+        EstadioDAO est = new EstadioDAO();
+        EstadioController estadioC = new EstadioController();
         
-             String resposta = request.getParameter("mensagem");
-             resposta += "Estou ouvindo do post de novo"; 
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-            
-//             HashMap<String,String> hm = new HashMap<String,String>();
-//
-//           hm.put("message","My first JSON application");
-//
-//           //Cada chave do HashMap vira uma Chave do JSON
-           
-            Estadio estadio = new Estadio();
-            EstadioDAO est = new EstadioDAO();
-            estadio = est.getEstadio(2);
-            
-            
-             String  teste = estadio.getNome();
-           JSONObject jsonObj = new JSONObject();
-          jsonObj.put("message",teste);
-          jsonObj.put("foto",Base64.encode(estadio.getFoto()));
-          
-//           // JSONObject json = JSONObject.fromObject(hm);
-//            System.out.println(jsonObj);
-// 
-//
-            //response.setContentType("application/json");
-//            PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 
-  // Pega a Stream de Saída do servidor que sera utilizada para enviar a resposta JSON
-
-             //out.print(json);//Escreve a resposta no formato JSON na Stream de saída que será recebida pela aplicação cliente
-             
-            //out.println(resposta);
-            //out.println("{ 'messagem' : 'Json criado' ");
-            out.println(jsonObj);
-             out.flush();
-             out.close();
+        String opcao = request.getParameter("op");
         
+        if (opcao.equals("listarEstadios")) {
+             arrayEstadio = estadioC.getEstadioList();
+             out.println(arrayEstadio);
+        }
+        
+        if (opcao.equals("estadio")) {
+            String resposta = request.getParameter("nomeEstadio");
+
+            try {
+
+                if (resposta.equals("Fonte Nova")) {
+                    jsonObj = estadioC.getEstadioByName("Fonte Nova");
+                }
+
+                if (resposta.equals("Maracanã")) {
+                    jsonObj = estadioC.getEstadioByName("Maracanã");
+                }
+
+                if (resposta.equals("Garrincha")) {
+                    jsonObj = estadioC.getEstadioByName("Mané Garrincha");
+                }
+
+                if (resposta.equals("Mineirão")) {
+                    jsonObj = estadioC.getEstadioByName("Mineirao");
+                }
+
+              out.println(jsonObj);//Escreve a resposta no formato JSON na Stream de saída que será recebida pela aplicação cliente
+                              
+            } catch (Exception e) {
+                System.out.println("Erro" + e.getMessage());
+
+            }                
+                out.flush();
+                out.close();
+        }
     }
 
     /** 
@@ -122,6 +132,5 @@ public class principal extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    
+
 }

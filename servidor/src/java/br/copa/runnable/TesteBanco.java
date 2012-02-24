@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.apache.catalina.util.Base64;
 
@@ -31,8 +33,32 @@ public class TesteBanco {
      EstadioDAO estadioDao = new EstadioDAO();
      TesteBanco teste = new TesteBanco();
      List<Estadio>estadioList = new ArrayList<Estadio>();
+     JSONArray arrayEstadio = new JSONArray();
+     JSONObject jsonObj = new JSONObject();
      Iterator it;
+     
+   /* try {
+	
+         estadioList = estadioDao.getEstadios();
+         it = estadioList.iterator();
+         while(it.hasNext()){
+         estadio = (Estadio)it.next();
+         
+          jsonObj.put("nome",estadio.getNome());
+     
+          
+          arrayEstadio.add(jsonObj);
+         }
+    	
+	 System.out.println(arrayEstadio);			
+								
+   } catch (JSONException e) {
+	  System.out.print("Error"+ e.getMessage());
+    }*/
     
+    
+     
+     
 //     
 //     teste.criarEsquemaDeBanco();
 //     
@@ -59,22 +85,22 @@ public class TesteBanco {
      */
      
      //gravando uma imagem no banco
-     File file = new File("D:/Arquivos/CopaAdvisor/img/maracana4.jpg");
-    
-     // Converte o arquivo em um array de bytes
-        byte[] bFile = new byte[(int) file.length()];
- 
-        try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            fileInputStream.read(bFile);
-            fileInputStream.close();
-        } catch (Exception e) {
-           System.out.println("Erro: "+e.getMessage());
-        }
-        
-        estadio = estadioDao.getEstadio(2);
-        estadio.setFoto(bFile);
-        estadioDao.update(estadio);
+//     File file = new File("D:/Arquivos/CopaAdvisor/img/maracana4.jpg");
+//    
+//     // Converte o arquivo em um array de bytes
+//        byte[] bFile = new byte[(int) file.length()];
+// 
+//        try {
+//            FileInputStream fileInputStream = new FileInputStream(file);
+//            fileInputStream.read(bFile);
+//            fileInputStream.close();
+//        } catch (Exception e) {
+//           System.out.println("Erro: "+e.getMessage());
+//        }
+//        
+//        estadio = estadioDao.getEstadio(2);
+//        estadio.setFoto(bFile);
+//        estadioDao.update(estadio);
      
       //busca de todos os estadios cadastrados
      /*estadioList = estadioDao.getEstadios();
@@ -93,9 +119,9 @@ public class TesteBanco {
      
      
      //update dos estadios
-     /*estadio = estadioDao.getEstadio(4);
-     estadio.setNome("Mané Garrincha");
-     estadioDao.update(estadio);*/
+     estadio = estadioDao.getEstadio(1);
+     estadio.setNome("Fonte Nova");
+     estadioDao.update(estadio);
      
   //   teste.criarEsquemaDeBanco(); acho q não preciso usar pois funciona sem ele
      

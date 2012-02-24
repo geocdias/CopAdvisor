@@ -66,6 +66,23 @@ public class EstadioDAO {
             session.close();
         }
     }
+    
+     public Estadio getEstadio(String nome) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Estadio estadio = (Estadio) session.createQuery(
+                    "from Estadio e "
+                    + "where e.nome=:nome").setParameter("nome", nome).uniqueResult();
+            
+            if(estadio == null){
+             return null;
+            }
+            
+            return estadio;
+        } finally {
+            session.close();
+        }
+    }
 
 
     
